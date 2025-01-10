@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(to bottom right, #f0f2f5, #e1e6ed); /* Subtle gradient background */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure footer sticks to bottom */
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-weight: 600;
+            color: #2c3e50; /* Darker header text */
+        }
+
+        .logout-btn {
+            background-color: #c0392b; /* Red logout button */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .logout-btn:hover {
+            background-color: #9b1911; /* Darker red on hover */
+        }
+        .notification {
+            background-color: #27ae60; /* Green notification */
+            color: white;
+            padding: 10px;
+            margin: 20px auto;
+            border-radius: 5px;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 20px;
+            padding: 20px;
+            flex-grow: 1; /* Allow container to grow and push footer */
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions */
+            overflow: hidden; /* Prevents content from overflowing rounded corners */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #34495e; /* Darker card title */
+        }
+        .course-id{
+            color: gray;
+        }
+
+        .card p {
+            color: #555;
+        }
+
+        .buy-btn {
+            background-color: #3498db; /* Blue button */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .buy-btn:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+        footer{
+            background-color: #34495e;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1 th:text="'Welcome, ' + ${username} + '!'">Welcome, User!</h1>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="logout-btn">Logout</button>
+    </form>
+</header>
+
+<div class="notification" id="notification" th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<div class="container">
+    <div class="card" th:each="course : ${courses}">
+        <h2 th:text="${course.course_name}">Course Name</h2>
+        <span class="course-id" th:text="'Course ID: ' + ${course.course_id}">Course ID</span>
+        <p th:text="${course.course_desc}">Course Description</p>
+        <form th:action="@{/buy}" method="post">
+            <input type="hidden" th:name="courseId" th:value="${course.course_id}"/>
+            <input type="hidden" th:name="username" th:value="${username}"/>
+            <button type="submit" class="buy-btn">Enroll Now</button>
+        </form>
+    </div>
+</div>
+<footer>
+    <p>&copy; 2023 Course Platform. All rights reserved.</p>
+</footer>
+</body>
+</html>
