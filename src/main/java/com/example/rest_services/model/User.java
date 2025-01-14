@@ -17,9 +17,9 @@ public class User {
     @Column(nullable = false,unique = true, length = 50)
     private String username;
 
-    @NotBlank(message = "Email is required") // Application-level validation (for user feedback)
-    @Email(message = "Invalid email format") // Application-level validation
-    @Size(max = 100, message = "Email cannot exceed 100 characters") //Application level validation
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
+    @Size(max = 100, message = "Email cannot exceed 100 characters")
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
@@ -27,14 +27,12 @@ public class User {
     private String password;
 
 
-//    @NotNull(message = "Purchase date is required")
-//    @PastOrPresent(message = "Purchase date cannot be in the future") // Example: Must be in the past or present
-//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Format for parsing from forms
+
     @Column(name = "course_bought_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date courseBoughtAt;
 
-    @Column(name = "course_id") // Map to the database column
+    @Column(name = "course_id")
     private Integer courseId;
 
 

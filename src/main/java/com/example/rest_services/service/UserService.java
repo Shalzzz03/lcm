@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public boolean isAdmin(String username) {
-        return "admin".equals(username); // Very simple admin check
+        return "admin".equals(username);
     }
 
     public void saveUser(User user) {

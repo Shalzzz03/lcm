@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class UserController {
@@ -36,7 +38,16 @@ public class UserController {
     public String signupUser(@ModelAttribute("user") User user) {
         String hashedPassword = PasswordUtils.hashPassword(user.getPassword());
         user.setPassword(hashedPassword);
-        userService.createUser(user);
+        String email = user.getEmail();
+        String emailRegex = "^[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+\\.)?xecurify\\.com$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+
+        if(matcher.matches()){
+            userService.createUser(user);
+        }else {
+            return "redirect:/signup?error=invalidEmail";
+        }
         return "redirect:/login";
     }
 

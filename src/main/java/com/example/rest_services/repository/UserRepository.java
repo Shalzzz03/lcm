@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // You can add custom queries here if needed
-    // Example: findByEmail(String email);
+
     User findByUsername(String username);
 }
