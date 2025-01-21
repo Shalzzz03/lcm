@@ -15,6 +15,9 @@ public class Course {
     @Column(nullable = false, length = 50)
     private String course_desc;
 
+    @Column(nullable = false)
+    private Integer course_price;
+
     // Getter and Setter methods with correct naming conventions
     public Integer getCourse_id() {
         return course_id;
@@ -38,5 +41,13 @@ public class Course {
 
     public void setCourse_desc(String course_desc) {
         this.course_desc = course_desc;
+    }
+
+    public Integer getCourse_price() {
+        return course_price;
+    }
+
+    public void setCourse_price(Integer course_price) {
+        this.course_price = course_price;
     }
 }

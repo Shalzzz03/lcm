@@ -30,16 +30,36 @@ public class AdminController {
             List<User> users = userService.getAllUsers();
             model.addAttribute("users", users);
 
-            List<Course> courses = courseService.getAllCourses();
-            model.addAttribute("courses", courses);
+//            List<Course> courses = courseService.getAllCourses();
+//            model.addAttribute("courses", courses);
 
-            model.addAttribute("newCourse", new Course()); // Add this line
+
 
             return "admin/users";
         } else {
             redirectAttributes.addFlashAttribute("message", "You are not authorized to access this page");
             return "redirect:/login";
         }
+    }
+
+    @GetMapping("/course_list")
+    public String viewCourses(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String username = (String) session.getAttribute("username");
+//        if (username != null && userService.isAdmin(username)) {
+//            List<User> users = userService.getAllUsers();
+//            model.addAttribute("users", users);
+
+            List<Course> courses = courseService.getAllCourses();
+            model.addAttribute("courses", courses);
+            model.addAttribute("newCourse", new Course());
+
+//            model.addAttribute("newCourse", new Course());
+
+            return "admin/course_list";
+//        } else {
+//            redirectAttributes.addFlashAttribute("message", "You are not authorized to access this page");
+//            return "redirect:/login";
+//        }
     }
 
 
@@ -60,7 +80,7 @@ public class AdminController {
         String username = (String) session.getAttribute("username");
         if (username != null && userService.isAdmin(username)) {
             courseService.saveCourse(course);
-            return "redirect:/admin/users";
+            return "redirect:/admin/course_list";
         } else {
             redirectAttributes.addFlashAttribute("message", "You are not authorized to perform this action");
             return "redirect:/login";
@@ -72,7 +92,7 @@ public class AdminController {
         String username = (String) session.getAttribute("username");
         if (username != null && userService.isAdmin(username)) {
             courseService.deleteCourse(Long.valueOf(id));
-            return "redirect:/admin/users";
+            return "redirect:/admin/course_list";
         } else {
             redirectAttributes.addFlashAttribute("message", "You are not authorized to perform this action");
             return "redirect:/login";

@@ -116,4 +116,34 @@ public class UserController {
             return "redirect:/login?error";
         }
     }
+
+    @GetMapping("/profile")
+    public String showProfile(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username != null) {
+            User user = userService.findUserByUsername(username);
+            model.addAttribute("user", user);
+            model.addAttribute("username", username);
+            return "profile";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile(@ModelAttribute User updatedUser, HttpSession session, RedirectAttributes redirectAttributes) {
+        String currentUsername = (String) session.getAttribute("username");
+        if (currentUsername != null) {
+            User user = userService.findUserByUsername(currentUsername);
+            user.setUsername(updatedUser.getUsername());
+            user.setEmail(updatedUser.getEmail());
+            userService.saveUser(user);
+            session.setAttribute("username", updatedUser.getUsername());
+            redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
+            return "redirect:/profile";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
 }

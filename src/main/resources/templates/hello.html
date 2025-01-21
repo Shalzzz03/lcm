@@ -117,6 +117,9 @@
     <form th:action="@{/logout}" method="post">
         <button type="submit" class="logout-btn">Logout</button>
     </form>
+    <nav>
+        <a th:href="@{/profile}">Profile</a>
+    </nav>
 </header>
 
 <div class="notification" id="notification" th:if="${message}">

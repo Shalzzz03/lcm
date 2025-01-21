@@ -27,11 +27,6 @@ public class User {
     private String password;
 
 
-
-    @Column(name = "course_bought_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date courseBoughtAt;
-
     @Column(name = "course_id")
     private Integer courseId;
 
@@ -67,14 +62,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Date getCourseBoughtAt() {
-        return courseBoughtAt;
-    }
-
-    public void setCourseBoughtAt(Date courseBoughtAt) {
-        this.courseBoughtAt = courseBoughtAt;
     }
 
     public Integer getCourseId() {

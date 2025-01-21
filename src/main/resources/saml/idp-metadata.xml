@@ -1,0 +1,31 @@
+<md:EntityDescriptor entityID="https://login.xecurify.com/moas/362632/1e17bb54-7baf-4e33-9a38-7f948104842b" ID="_58eb6efc-1f19-431b-8146-3fef71f908d0"
+                     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+    <md:IDPSSODescriptor ID="_04494e78-cc4f-404b-9fa8-16373b073228"
+                         protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"
+                         WantAuthnRequestsSigned="false">
+        <md:KeyDescriptor use="signing">
+            <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <X509Data>
+                    <X509Certificate>
+                        MIICqjCCAZKgAwIBAgIIUyTlzl1wjTMwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UEAxMKbWluaU9yYW5nZTAeFw0yNTAxMjAwMjE5MzdaFw0zNTAxMTgwMjE5MzdaMBUxEzARBgNVBAMTCm1pbmlPcmFuZ2UwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCivohnumPcgao2fXICbrXegqdea5R4Q569Waw44efy2HOZbdt7f+RYMue/h2vktpn/1/EpJT1RaBju5isSBDhuNVO0aXFQmKMBTdsAbNXVa7fD8tA33h35iTCaHk1I89kPFGn4MUin4ny/JLEDwMoveAMs1p+jzFnb1T5Jks772j5ytBYIe3PIRmUW08tBtkD9WAg3fDk5rkuAgfWXieyfs8BWnDJ31fuTkwXMMokuf6NHXMPSS7MxGx3/fgFY4wyftV7Rq9jvF0z+AHyvvQAaTYJ0s2W5c7rtfuBm5SQv4IUr3OfZM1G8AWpENBUoHFua6rHt2KmogLjb6PeIRhC7AgMBAAEwDQYJKoZIhvcNAQELBQADggEBADSQcf4xTSZkY7w8Rv2t7LURNdH3vA0e+wfN21JB7fK8a5Mnm9TEYdw0ZiVt9Ioyb3jJPTr7TuZJ9dKwznbXP+48A4xqW3W043+21H/YgYWz7lV/kkRqKOLjwORZJcFpUzT45FbQpw6nFlmQtXEj3bYkNUhHNK0HMK5FxGfOzqTvizR1nrsyDa19jqUCqSSUuauKSlSyPtKqZmIeTZV84pnjvCBGNPt3wSBry24aKKxkxqrnMTg/k7wUqYXkO2TbtYAHOdarmjhRSHUcyqAQNxhc+aYAS/RcOLSVRGai7LPX7XWY8H9pcY1w19pe532EQwWbh3CBJPno3BSiZK/tLsw=
+                    </X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </md:KeyDescriptor>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://shalzzz03.xecurify.com/moas/idp/samlsso/1e17bb54-7baf-4e33-9a38-7f948104842b"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://shalzzz03.xecurify.com/moas/idp/samlsso/1e17bb54-7baf-4e33-9a38-7f948104842b"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://shalzzz03.xecurify.com/moas/idp/samllogout/1e17bb54-7baf-4e33-9a38-7f948104842b"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://shalzzz03.xecurify.com/moas/idp/samllogout/1e17bb54-7baf-4e33-9a38-7f948104842b"/>
+    </md:IDPSSODescriptor>
+    <md:Organization>
+        <md:OrganizationName xml:lang="en">miniOrange</md:OrganizationName>
+        <md:OrganizationDisplayName xml:lang="en">miniOrange</md:OrganizationDisplayName>
+        <md:OrganizationURL xml:lang="en">www.miniorange.com</md:OrganizationURL>
+    </md:Organization>
+    <md:ContactPerson contactType="technical">
+        <md:GivenName>miniOrange</md:GivenName>
+        <md:SurName>Support</md:SurName>
+        <md:EmailAddress>info@xecurify.com</md:EmailAddress>
+    </md:ContactPerson>
+</md:EntityDescriptor>
