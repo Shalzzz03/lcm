@@ -35,7 +35,6 @@ class UserServiceTest {
         user.setUsername("testUser");
         user.setEmail("test@example.com");
         user.setPassword("password123");
-        user.setCourseBoughtAt(new Date());
         user.setCourseId(101);
     }
 

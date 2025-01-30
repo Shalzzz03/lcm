@@ -121,8 +121,46 @@
         <button type="submit">Save</button>
     </form>
 </div>
-<footer>
-    <p>&copy; 2023 Course Platform. All rights reserved.</p>
-</footer>
+<table>
+    <thead>
+    <tr>
+        <th>Course ID</th>
+        <th>Course Name</th>
+        <th>Course Description</th>
+        <th>Course Price</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course : ${user.courses}">
+        <td th:text="${course.course_id}"></td>
+        <td th:text="${course.course_name}"></td>
+        <td th:text="${course.course_desc}"></td>
+        <td th:text="${course.course_price}"></td>
+        <td>
+            <form th:action="@{/users/delete/{id}/{course_id}(id=${user.id}, course_id=${course.course_id})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--<div th:unless="${course}"> <p>You haven't bought any courses yet.</p>  </div>-->
+<!--<footer>-->
+<!--    <p>&copy; 2023 Course Platform. All rights reserved.</p>-->
+<!--</footer>-->
+
+<script>
+    (function() {
+        window.history.pushState(null, "", window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, "", window.location.href);
+        };
+    })();
+</script>
+
 </body>
+
+
 </html>

@@ -5,14 +5,14 @@ import com.example.rest_services.model.User;
 import com.example.rest_services.service.CourseService;
 import com.example.rest_services.service.UserService;
 import com.example.rest_services.util.PasswordUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -44,6 +44,7 @@ public class UserController {
         Matcher matcher = pattern.matcher(email);
 
         if(matcher.matches()){
+            user.setRole("user");
             userService.createUser(user);
         }else {
             return "redirect:/signup?error=invalidEmail";
@@ -52,13 +53,21 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         return "login";
     }
 
     @PostMapping("/logout")
-    public String showLoginFormAfterLogout() {
-        return "login";
+    public String showLoginFormAfterLogout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+        return "redirect:/login";
     }
 
     @PostMapping("/login")
@@ -67,7 +76,9 @@ public class UserController {
 
         if (user != null && PasswordUtils.checkPassword(password, user.getPassword())) {
             session.setAttribute("username", username);
-            if (userService.isAdmin(username)) {
+            session.setAttribute("role", user.getRole());
+
+            if ("admin".equals(user.getRole())) {
                 return "redirect:/admin/users";
             } else {
                 return "redirect:/courses";
@@ -78,9 +89,13 @@ public class UserController {
     }
 
     @GetMapping("/hello")
-    public String hello(HttpSession session, Model model) {
+    public String hello(HttpSession session, Model model,HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         String username = (String) session.getAttribute("username");
-        if (username != null) {
+        String role = (String) session.getAttribute("role");
+        if (role != null) {
             model.addAttribute("username", username);
             return "hello";
         } else {
@@ -89,9 +104,13 @@ public class UserController {
     }
 
     @GetMapping("/courses")
-    public String viewCourses(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+    public String viewCourses(HttpSession session, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         String username = (String) session.getAttribute("username");
-        if (username != null) {
+        String role = (String) session.getAttribute("role");
+        if (role != null) {
             List<Course> courses = courseService.getAllCourses();
             model.addAttribute("courses", courses);
             model.addAttribute("username", username);
@@ -102,28 +121,60 @@ public class UserController {
         }
     }
 
-    @PostMapping("/buy")
-    public String buyCourse(@RequestParam Integer courseId, @RequestParam String username, RedirectAttributes redirectAttributes) {
-        User user = userService.findUserByUsername(username);
+//    @PostMapping("/buy")
+//    public String buyCourse(@RequestParam Integer courseId, @RequestParam String username, RedirectAttributes redirectAttributes, HttpSession session) {
+//        User user = userService.findUserByUsername(username);
+//
+//        if (user != null) {
+//            user.setCourseId(courseId);
+//            userService.saveUser(user);
+//            session.setAttribute("courseId", courseId);
+//            redirectAttributes.addFlashAttribute("message", "Course purchased successfully!");
+//            return "redirect:/courses";
+//        } else {
+//            redirectAttributes.addFlashAttribute("message", "User not found");
+//            return "redirect:/login?error";
+//        }
+//    }
+        @PostMapping("/buy")
+        public String buyCourse(@RequestParam Integer courseId, @RequestParam String username,
+                                RedirectAttributes redirectAttributes, HttpSession session) {
+            User user = userService.findUserByUsername(username);
 
-        if (user != null) {
-            user.setCourseId(courseId);
-            userService.saveUser(user);
-            redirectAttributes.addFlashAttribute("message", "Course purchased successfully!");
-            return "redirect:/courses";
-        } else {
-            redirectAttributes.addFlashAttribute("message", "User not found");
-            return "redirect:/login?error";
+            if (user != null) {
+                userService.enrollUserInCourse(user.getId(), courseId);
+                session.setAttribute("courseId", courseId);
+                redirectAttributes.addFlashAttribute("message", "Course purchased successfully!");
+                return "redirect:/courses";
+            } else {
+                redirectAttributes.addFlashAttribute("message", "User not found");
+                return "redirect:/login?error";
+            }
         }
-    }
 
     @GetMapping("/profile")
-    public String showProfile(HttpSession session, Model model) {
+    public String showProfile(HttpSession session, Model model, HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         String username = (String) session.getAttribute("username");
-        if (username != null) {
+        Integer courseId = (Integer) session.getAttribute("courseId");
+        String role = (String) session.getAttribute("role");
+        if (role != null) {
             User user = userService.findUserByUsername(username);
             model.addAttribute("user", user);
             model.addAttribute("username", username);
+
+            if (user.getCourseId() != null) {
+                Course course = courseService.findCourseByCourseId(user.getCourseId());
+                model.addAttribute("course", course);
+
+                if (course == null) { // Handle the case where the course was not found
+                    model.addAttribute("errorMessage", "Course not found."); // Or other appropriate message
+                }
+            } else {
+                model.addAttribute("errorMessage", "No course associated with this user."); // Or other appropriate message
+            }
             return "profile";
         } else {
             return "redirect:/login";
@@ -142,6 +193,19 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
             return "redirect:/profile";
         } else {
+            return "redirect:/login";
+        }
+    }
+
+
+    @PostMapping("/users/delete/{id}/{course_id}")
+    public String deleteUser(HttpSession session, @PathVariable Integer id, @PathVariable Integer course_id, RedirectAttributes redirectAttributes) {
+        String username = (String) session.getAttribute("username");
+        if (username != null) {
+            userService.removeUserFromCourse(Long.valueOf(id), course_id);
+            return "redirect:/profile";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "You are not authorized to perform this action");
             return "redirect:/login";
         }
     }

@@ -224,6 +224,12 @@
         loginBtn.classList.add('loading');
         loginBtn.textContent = 'Logging in...';
     });
+    (function() {
+        window.history.pushState(null, "", window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, "", window.location.href);
+        };
+    })();
 </script>
 </body>
 </html>

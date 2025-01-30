@@ -2,12 +2,15 @@ package com.example.rest_services.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer course_id;
+    private Integer courseId;
 
     @Column(nullable = false, length = 50)
     private String course_name;
@@ -18,13 +21,17 @@ public class Course {
     @Column(nullable = false)
     private Integer course_price;
 
+    @ManyToMany(mappedBy = "courses")
+    private Set<User> users = new HashSet<>();
+
+
     // Getter and Setter methods with correct naming conventions
     public Integer getCourse_id() {
-        return course_id;
+        return courseId;
     }
 
-    public void setCourse_id(Integer course_id) {
-        this.course_id = course_id;
+    public void setCourse_id(Integer courseId) {
+        this.courseId = courseId;
     }
 
     public String getCourse_name() {
@@ -50,4 +57,13 @@ public class Course {
     public void setCourse_price(Integer course_price) {
         this.course_price = course_price;
     }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
 }

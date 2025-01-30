@@ -48,7 +48,7 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("classpath:/templates/"); // Correct prefix for Thymeleaf
+        viewResolver.setPrefix("classpath:/templates/");
         viewResolver.setSuffix(".html");
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 

@@ -274,7 +274,11 @@
             <td th:text="${user.id}"></td>
             <td th:text="${user.username}"></td>
             <td th:text="${user.email}"></td>
-            <td th:text="${user.courseId}"></td>
+            <td>
+                <ul>
+                    <li th:each="course : ${user.courses}" th:text="${course.course_name}"></li>
+                </ul>
+            </td>
             <td>
                 <form th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="post">
                     <button type="submit">Delete</button>
@@ -287,8 +291,19 @@
     <h1>Course List</h1>
     <a th:href="@{course_list}" class="btn btn-primary">View Courses</a>
 
-
+    <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
 
 </div>
+
+<script>
+    (function() {
+        window.history.pushState(null, "", window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, "", window.location.href);
+        };
+    })();
+</script>
 </body>
 </html>
